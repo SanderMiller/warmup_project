@@ -12,9 +12,8 @@ class teleop_node():
     def __init__(self):
         self.pub = rospy.Publisher('cmd_vel', Twist, queue_size=10)
         rospy.init_node('teleop', anonymous=True)
-        self.rate = rospy.Rate(10) # 10hz
+        self.rate = rospy.Rate(10)
 
-#Generate Velocity Commands
     def getKey(self):
         tty.setraw(sys.stdin.fileno())
         select.select([sys.stdin], [], [], 0)
@@ -32,7 +31,6 @@ class teleop_node():
             velocity.angular = Vector3(0,0,0)
             key = self.getKey()
             print(key)
-            #convert key to msg
             
             if key == 'w':
                 velocity.linear = Vector3(1,0,0)
@@ -43,18 +41,11 @@ class teleop_node():
                 velocity.angular = Vector3(0,0,1)
             elif key == 'd':
                 velocity.angular = Vector3(0,0,-1)
-            key = 'none'
 
             self.pub.publish(velocity)
-            #publish message
             self.rate.sleep()
     
 
 if __name__ == '__main__':
     tele = teleop_node()
     tele.run()
-
-#Create Publisher
-
-
-#Publish Velocity Commands to Topic
