@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
-from geometry_msgs.msg import Twist, Vector3
+from visualization_msgs.msg import Marker
+from geometry_msgs.msg import Twist, Vector3, Pose, Point, Quaternion
 from nav_msgs.msg import Odometry
 from tf.transformations import euler_from_quaternion, quaternion_from_euler
+from std_msgs.msg import Header, ColorRGBA
 import rospy
 import math
 import numpy as np
@@ -14,6 +16,7 @@ class drive_square_node():
         self.pub = rospy.Publisher('cmd_vel', Twist, queue_size=10)
         rospy.Subscriber('/odom', Odometry, self.process_odom)
         rospy.init_node('driveSquare', anonymous=True)
+        self.marker_publisher = rospy.Publisher('visualization_marker', Marker)
         self.inititialize = True
         self.rate = rospy.Rate(10)
 
@@ -39,6 +42,16 @@ class drive_square_node():
         elif self.side == 0:
             self.goal_pos = [self.init_pos.position.x, self.init_pos.position.y-1, self.init_pos.position.z]
             print("Real Goal Angle = -1.577")
+        marker = Marker(
+                type=Marker.SPHERE,
+                id=0,
+                lifetime=rospy.Duration(1.5),
+                pose=Pose(Point(self.goal_pos[0],self.goal_pos[1],self.goal_pos[2]), Quaternion(0, 0, 0, 1)),
+                scale=Vector3(0.06, 0.06, 0.0),
+                header=Header(frame_id='base_link'),
+                color=ColorRGBA(0.0, 1.0, 0.0, 0.8),
+                )
+        self.marker_publisher.publish(marker)
         print("Goal Point: "+str(self.goal_pos))
 
         print('calc')
@@ -47,7 +60,7 @@ class drive_square_node():
         self.goal_heading = self.calc_heading()#self.current_heading[2]-(math.pi/2)#%(math.pi/2)
         print("Calculated Goal Heading: "+str(self.goal_heading))
         print("Current Heading: "+str(self.current_heading))
-        
+        self.inititialize = False
         return self.turn
     def calc_heading(self):
 
@@ -57,6 +70,9 @@ class drive_square_node():
         angle = -1*(angle-math.pi/2)
         if self.side>2:
             angle = angle-math.pi/2
+        if self.side ==1 and self.inititialize == False:
+            angle = angle+math.pi/2
+
         return angle
 
 
