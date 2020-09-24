@@ -46,8 +46,8 @@ class drive_square_node():
                 type=Marker.SPHERE,
                 id=0,
                 lifetime=rospy.Duration(1.5),
-                pose=Pose(Point(self.goal_pos[0],self.goal_pos[1],self.goal_pos[2]), Quaternion(0, 0, 0, 1)),
-                scale=Vector3(0.06, 0.06, 0.0),
+                pose=Pose(Point(self.goal_pos[0],self.goal_pos[1],self.goal_pos[2]), Quaternion(0, 0, 0, 0)),
+                scale=Vector3(0.06, 0.06, 0.6),
                 header=Header(frame_id='base_link'),
                 color=ColorRGBA(0.0, 1.0, 0.0, 0.8),
                 )
@@ -81,12 +81,14 @@ class drive_square_node():
         current_euler = euler_from_quaternion([self.current_position.orientation.x,self.current_position.orientation.y,self.current_position.orientation.z,self.current_position.orientation.w])
         #print(current_euler)
         #print(self.current_heading[2]+(math.pi/2))
-        heading_error = self.goal_heading - current_euler[2]
-        #print("Head Error: " +str(heading_error))
-        desired_ang_velocity = heading_error
+        heading_error = (self.goal_heading - current_euler[2])
+        print("Head Error: " +str(heading_error))
+        desired_ang_velocity = abs(heading_error%math.pi)
+        if self.side == 3:
+            desired_ang_velocity = desired_ang_velocity
         self.pub.publish(Twist(angular=Vector3(z=desired_ang_velocity)))
         self.rate.sleep()
-        if abs(heading_error)<.01:
+        if desired_ang_velocity<.01:
             return self.move_forward
         else:
             return self.turn
@@ -104,6 +106,7 @@ class drive_square_node():
         
         #print('posError '+str(pos_error))
         if abs(pos_error)<0.1:
+            self.pub.publish(Twist(linear=Vector3(x=0)))
             self.side+=1
             return self.calc_goal
         else:
