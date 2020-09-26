@@ -8,4 +8,5 @@ In order to control the robot's movement I wrote a simple teleoperation script t
 <h2>Driving in a Square</h2>
 
 In order to drive in a square, I explored the robot's odometry data. I used a finite state controller and proportional control in order to calculate and move to the next goal position. 
+
 ![Image of the three state controller for driving in a square](warmup_project/screenshots/SquareStateController.jpg)
