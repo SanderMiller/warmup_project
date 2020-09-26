@@ -7,6 +7,8 @@ from sensor_msgs.msg import LaserScan
 from geometry_msgs.msg import Twist, Vector3
 from sklearn import linear_model
 from scipy.interpolate import interp1d
+import matplotlib.pyplot as plt
+import scipy.cluster.hierarchy as hcluster
 
 class wall_follower():
     def __init__(self):
@@ -45,38 +47,79 @@ class wall_follower():
         for i in range(imgPointsX.size):
             img[imgPointsX[i]][imgPointsY[i]] = 255
         imgInv = cv.bitwise_not(img)
-        lines = cv.HoughLines(img,1,np.pi/180,10)#,10,10)
-        print(lines.shape)
+        lines = cv.HoughLines(img,1,np.pi/180,4)#,10,10)
+        #print(lines.shape)
         blankim = cv.merge((imgInv, imgInv, imgInv))
-        '''
-        for x1,y1,x2,y2 in lines[0]:
-            x1 = x1#+1000
-            x2 = x2#*-1+1000
-            y1 = y1
-            y2 = y2#*-1+1000
-            cv.line(blankim,(x1,y1),(x2,y2),(0,0,255),3)
-        '''
         
-        for rho,theta in lines[0]:
-            print(lines)
-            a = np.cos(theta)
-            b = np.sin(theta)
-            x0 = a*rho
-            y0 = b*rho
-            x1 = int(x0 + 1000*(-b))
-            y1 = int(y0 + 1000*(a))
-            x2 = int(x0 - 1000*(-b))
-            y2 = int(y0 - 1000*(a))
+        rhoVals = []
+        thetaVals = []
+        
+        for i in range(lines.shape[0]):
+            for rho,theta in lines[i]:
+                rhoVals.append(rho)
+                thetaVals.append(theta)
+                
+                a = np.cos(theta)
+                b = np.sin(theta)
+                x0 = a*rho
+                y0 = b*rho
+                x1 = int(x0 + 1000*(-b))
+                y1 = int(y0 + 1000*(a))
+                x2 = int(x0 - 1000*(-b))
+                y2 = int(y0 - 1000*(a))
 
-            cv.line(blankim,(x1,y1),(x2,y2),(0,0,255),2)
+                cv.line(blankim,(x1,y1),(x2,y2),(0,0,255),2)
+                
 
+        
+
+        interpTheta = interp1d([0,np.pi],[-1000,1000])
+        thetaInterpolated = interpTheta(thetaVals)
+        data = np.transpose(np.stack((rhoVals,thetaInterpolated)))
+        thresh = 50
+        clusters = hcluster.fclusterdata(data, thresh, criterion="distance")
+        clusteredData = np.column_stack((data,clusters))
+        #print(clusteredData.shape)
+        rhoAverage = []
+        thetaAverage = []
+        for i in range(max(clusters)):
+            indices = np.asarray(np.where(clusters == i+1)).astype(int)
+            indices = indices[0]
+            currentRho = np.take(rhoVals,indices)
+            currentTheta = np.take(thetaVals,indices)
+            rhoAverage.append(np.average(currentRho))
+            thetaAverage.append(np.average(currentTheta))
+
+        averagedData = np.column_stack((rhoAverage,thetaAverage))
+        for i in range(averagedData.shape[0]):
+            print(averagedData[i][0])
+            
+            for rho,theta in np.reshape(averagedData[i],(1,2)):
+                a = np.cos(theta)
+                b = np.sin(theta)
+                x0 = a*rho
+                y0 = b*rho
+                x1 = int(x0 + 1000*(-b))
+                y1 = int(y0 + 1000*(a))
+                x2 = int(x0 - 1000*(-b))
+                y2 = int(y0 - 1000*(a))
+
+                cv.line(blankim,(x1,y1),(x2,y2),(255,0,0),2)
         for i in range(imgPointsX.size):
             blankim[imgPointsX[i]][imgPointsY[i],:] = 0
+            
+        plt.scatter(rhoVals,thetaVals,c=clusters)
+        plt.scatter(rhoAverage, thetaAverage, c = '#FF0000',marker=(5,2))
+
+        plt.xlabel('Rho')
+        plt.ylabel('Theta')
+        plt.title('Using Hierarchical Clustering to Filter Hough Lines')
+        plt.show()
         
         cv.imshow('image', blankim)
         cv.waitKey(0)
         cv.destroyAllWindows()
-
+        
         
         
 
