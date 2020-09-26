@@ -19,4 +19,6 @@ In order to drive in a square, I explored the robot's odometry data. I used a fi
 <p align="center">
   <img width="460" height="300" src="warmup_project/screenshots/SquareStateController.jpg">
 </p>
-
+<h3>Calculating Goal Point and Position</h3>
+<h3>Turning</h3>
+<h3>Moving Forward</h4>
