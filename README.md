@@ -26,6 +26,6 @@ Once the goal position and angle have been calculated we enter the turning state
 <h3>Moving Forward</h3>
 Once the robot is in the moving forward state it is facing the goal point, and just needs to move forward in order to reach it. To do this I again used a proportional controller, where the error is the distance between the robot and the goal point. As the robot approaches the waypoint it's velocity decreases proportionally. For both the moving forward and turning controllers, I found a gain value of 1 worked just fine.
 
-<h2>Results, Reflections, and Next Steps</h2>
+<h3>Results, Reflections, and Next Steps</h3>
 <p align="center">
   <img width="342" height="342" src="warmup_project/screenshots/DriveSquare.gif">
