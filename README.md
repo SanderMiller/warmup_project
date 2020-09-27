@@ -37,6 +37,6 @@ To generate wall following behaviour I made use of the Hough Transform and again
 
 
 <p align="center">
-  <img width="342" height="342" src="warmup_project/screenshots/WallFollowingStateDiagram.jpg">
+  <img width="600" height="400" src="warmup_project/screenshots/WallFollowingStateDiagram.jpg">
 
 
