@@ -35,4 +35,5 @@ Identical behaviour could have been replicated much more concisely with using pu
 <h2>Wall Following</h2>
 To generate wall following behaviour I made use of the Hough Transform and again used a finite state controller. The goal of the behaviour was to be able to identify a wall from any orientation, approach it, and drive parallel to it at a distance of 1m.
 
-<h3>Implementation of the Hough Transform</h3>
+
+
