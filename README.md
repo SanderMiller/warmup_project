@@ -1,4 +1,4 @@
-# warmup_project
+# Comp Robo Warmup Project
 This is the base repo for the Olin Computational Robotics warmup project.
 
 <h2>Robot Teleop</h2>
