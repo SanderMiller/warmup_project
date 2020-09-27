@@ -30,4 +30,5 @@ Once the robot is in the moving forward state it is facing the goal point, and j
 <p align="center">
   <img width="342" height="342" src="warmup_project/screenshots/DriveSquare.gif">
   
- I am very pleased with my results. The square was fairly concise, and even after letting the script run for a few minutes the robot remained in relatively the same position. There was a little bit of drift over time but this is to be expects. This could be slightly mitigated By decreasing the threshold values for both proportional controllers. 
+I am very pleased with my results. The square was fairly concise, and even after letting the script run for a few minutes the robot remained in relatively the same position. There was a little bit of drift over time but this is to be expects. This could be slightly mitigated by decreasing the threshold values for both proportional controllers. 
+Identical behaviour could have been replicated much more concisely with using purely time based controls; however, I think I learned a lot more about the robot's coordinate system and odometry data, finite state controllers, and proportional control through my implementation.
