@@ -28,12 +28,15 @@ Once the robot is in the moving forward state it is facing the goal point, and j
 
 <h3>Results, Reflections, and Next Steps</h3>
 <p align="center">
-  <img width="342" height="342" src="warmup_project/screenshots/DriveSquare.gif">
+  <img width="600" height="400" src="warmup_project/screenshots/DriveSquare.gif">
   
 I am very pleased with my results. The square was fairly concise, and even after letting the script run for a few minutes the robot remained in relatively the same position. There was a little bit of drift over time but this is to be expects. This could be slightly mitigated by decreasing the threshold values for both proportional controllers. 
 Identical behaviour could have been replicated much more concisely with using purely time based controls; however, I think I learned a lot more about the robot's coordinate system and odometry data, finite state controllers, and proportional control through my implementation.
 <h2>Wall Following</h2>
 To generate wall following behaviour I made use of the Hough Transform and again used a finite state controller. The goal of the behaviour was to be able to identify a wall from any orientation, approach it, and drive parallel to it at a distance of 1m.
 
+
+<p align="center">
+  <img width="342" height="342" src="warmup_project/screenshots/WallFollowingStateDiagram.jpg">
 
 
