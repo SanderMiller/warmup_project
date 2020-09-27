@@ -87,7 +87,8 @@ class drive_square_node():
             return self.turn
 
     def move_forward(self):
-
+        #Move to Goal Position
+        
         #Calculate Position Error
         pos_error = max(abs(np.array(self.goal_pos)-np.array([self.current_position.position.x,self.current_position.position.y, self.current_position.position.z])))
         #Calculate Desired Velocity (Gain=1)
