@@ -52,3 +52,5 @@ I began by subscribing to the lidar topic and because I used OpenCV's version of
  Thats a lot of lines despite the fact there are only two walls within view of the robot's lidar. In order to get rid of excess noise I filtered the lines using a technique known as hierarchical clustering. As you can see even though there are many lines detected, there are two main groups or clusters that reflect the two walls. When viewing these lines in the Hough space this is even more clear. By using hierarchical clustering I was able to group the lines together based on their euclidean distance apart in a normalized Hough space. Then, I took the average rho and theta values for each cluster and used those to represent the wall. 
   <p align="center">
   <img width="500" height="500" src="warmup_project/screenshots/FinalScatterPlot.png">
+    <p align="center">
+  <img width="500" height="500" src="warmup_project/screenshots/AveragedLines.png">
