@@ -77,6 +77,8 @@ I began by subscribing to the lidar topic and because I used OpenCV's version of
  In order to identify and follow people I again used hierarchical clustering, but this time on lidar data to distinguish between multiple objects, and calculate the center of mass of each object. Then, that center of mass would become a goal position to which the robot would drive towards. Yet again I used a finite state controller to imitate person following behaviour.
  <p align="center">
   <img width="450" height="300" src="warmup_project/screenshots/PersonFollowerStateDiagram.jpg">
-  <h3>PIdentifying a Person</h3>
+  <h3>Identifying a Person</h3>
   In order to identify discrete objects or people, I divided the measured lidar ranges into clusters using hierarchical clustering. Then, for each cluster I calculate the center of mass by taking the average X and Y coordinate of each point within a given cluster. This process is shown below.
+   <p align="center">
+  <img width="900" height="400" src="warmup_project/screenshots/MergedMass.png">
   
