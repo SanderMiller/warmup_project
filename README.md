@@ -61,4 +61,11 @@ I began by subscribing to the lidar topic and because I used OpenCV's version of
  Now that we have a rho and theta value for each wall, it's time to choose which wall to follow. I choose which wall to follow based on the number of lines within it's Hough space cluster. This *should* pick the wall with the most measured lidar ranges. Once a wall has been identified, the robot enters the turning state.
  
  <h3>Turning to Approach the Wall</h3>
- Once the wall has been identified, the robot turns in order to position itself 1 meter away from the wall. To do this, the robot must turn perpendicular to the wall so that it is directly facing the wall. 
+ Once the wall has been identified, the robot turns in order to position itself 1 meter away from the wall. To do this, the robot must turn perpendicular to the wall so that it is directly facing the wall. To do this I again used a proportional controller, where it would continue turning while the absolute values of the error in heading, calculated by the goal heading minus the current heading, was above some threhold value. Once the error dipped below the threshold value, the robot would move on to the next state.
+ <h3>Moving to Approach the Wall</h3>
+ Once the robot has identified and faced the wall, it now approaches. I again used proportional control based on the range value directly ahead of the robot. As that value approached a distance of 1, the robot slowed down. Once the robot had come to a complete stop, it would now turn parallel to the wall in order to follow it.
+  <h3>Turning to Follow the Wall</h3>
+  Similarly to the first turning state, the robot used proportional control to approach a goal heading, only this time the headin was parallel to the wall. When the robot finally reached that point, it would move on to the wall following state.
+  <h3>Moving to Follow the Wall</h3>
+  Once the robot is facing parallel to the wall, with a 1 meter offset, it simply has to go forward in order to follow the wall. It also ends up keeping track of the lidar ranges 90 degrees to the righturning and left of itself to ensure it does not stray too far from the wall. If this range perpendicular to the wall becomes greater or less than 1±0.5, the robot returns to the idntifying wall state in order to adjust itself and the process starts over again.
+  
