@@ -72,5 +72,5 @@ I began by subscribing to the lidar topic and because I used OpenCV's version of
   <p align="center">
   <img width="500" height="500" src="warmup_project/screenshots/Wall_follower.gif">
   
-  I put a lot of time and effort into making this behaviour work, and it ended up working okay; however, it was very inconsistent, sometimes it worked great and other times not so well. I think there was something a little bit off woth the conversion between the wall angle theta, and the robots coordinate system. In the future it would be nice to take another look at this and see if it can be fixed.
+  I put a lot of time and effort into making this behaviour work, and it ended up working okay; however, it was very inconsistent, sometimes it worked great and other times not so well. I think there was something a little bit off with the conversion between the wall angle theta, and the robots coordinate system. In the future it would be nice to take another look at this and see if it can be fixed. Also, the computational power of constantly checking for a new wall made the movement and turning a little choppy.
   
