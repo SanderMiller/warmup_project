@@ -41,10 +41,14 @@ To generate wall following behaviour I made use of the Hough Transform and again
 
 <h3>Identifying the Wall</h3>
 Identifying the wall is probably the most complex aspect of this behaviour. In order to do this I made use of the Hough Transform. The Hough Transform is an algorithm commonly used in computervision to identify lines within a binary image, often used in tandem with edge detection operators such as the Canny edge detector. The way the Hough transform works is by essentially spinning a line around each point, π radians. At each orientation on each point, this line has a unique angle and offset value, theta and rho. Based on the number of other points this line passes through it is given a value, and lines that pass through more than some threshold number of points are identified as lines. Since the lidar data is relatively sparse I used a threshold value of 4 points to characterize a line/wall. 
-I began by subscribing to the lidar topic and because I used openCV's version of the Hough Transform I interpolated the data into a 1000x1000 binary image.
+I began by subscribing to the lidar topic and because I used OpenCV's version of the Hough Transform I interpolated the data into a 1000x1000 binary image.
 <p align="center">
   <img width="1300" height="400" src="warmup_project/screenshots/Merged2WallsLabeled.png">
   
-  From there, I used the <code>HoughLines()</code> function on the inverted binary image. Below visualized all lines consisting of 4 or more points.
+  From there, I used the <code>cv2.HoughLines()</code> function on the inverted binary image. Below visualizes all possible lines consisting of 4 or more points.
  <p align="center">
   <img width="500" height="500" src="warmup_project/screenshots/AllLines.png">
+  
+ Thats a lot of lines despite the fact there are only two walls within view of the robot's lidar. In order to get rid of excess noise I filtered the lines using a technique known as hierarchical clustering. As you can see even though there are many lines detected, there are two main groups or clusters that reflect the two walls. When viewing these lines in the Hough space this is even more clear. By using hierarchical clustering I was able to group the lines together based on their euclidean distance apart in a normalized Hough space. Then, I took the average rho and theta values for each cluster and used those to represent the wall. 
+  <p align="center">
+  <img width="500" height="500" src="warmup_project/screenshots/FinalScatterPlot.png">
