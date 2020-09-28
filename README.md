@@ -1,5 +1,4 @@
 # Comp Robo Warmup Project
-This is the base repo for the Olin Computational Robotics warmup project.
 
 <h2>Robot Teleop</h2>
 
@@ -61,4 +60,30 @@ I began by subscribing to the lidar topic and because I used OpenCV's version of
  Now that we have a rho and theta value for each wall, it's time to choose which wall to follow. I choose which wall to follow based on the number of lines within it's Hough space cluster. This *should* pick the wall with the most measured lidar ranges. Once a wall has been identified, the robot enters the turning state.
  
  <h3>Turning to Approach the Wall</h3>
- Once the wall has been identified, the robot turns in order to position itself 1 meter away from the wall. To do this, the robot must turn perpendicular to the wall so that it is directly facing the wall. 
+ Once the wall has been identified, the robot turns in order to position itself 1 meter away from the wall. To do this, the robot must turn perpendicular to the wall so that it is directly facing the wall. To do this I again used a proportional controller, where it would continue turning while the absolute value of the error in heading, calculated by the goal heading minus the current heading, was above some threshold value. Once the error dipped below the threshold value, the robot would move on to the next state.
+ <h3>Moving to Approach the Wall</h3>
+ Once the robot has identified and faced the wall, it now approaches. I again used proportional control based on the range value directly ahead of the robot. As that value approached a distance of 1, the robot slowed down. Once the robot had come to a complete stop, it would now turn parallel to the wall in order to follow it.
+  <h3>Turning to Follow the Wall</h3>
+  Similarly to the first turning state, the robot used proportional control to approach a goal heading, only this time the heading was parallel to the wall. When the robot finally reached that point, it would move on to the wall following state.
+  <h3>Moving to Follow the Wall</h3>
+  Once the robot is facing parallel to the wall, with a 1 meter offset, it simply has to go forward in order to follow the wall. It also ends up keeping track of the lidar ranges 90 degrees to the righ and left of itself to ensure it does not stray too far from the wall. If this range perpendicular to the wall becomes greater or less than 1±0.5, the robot returns to the identifying wall state in order to adjust itself and the process starts over again.
+  <h3>Results and Reflections</h3>
+  <p align="center">
+  <img width="500" height="500" src="warmup_project/screenshots/Wall_follower.gif">
+  
+  I put a lot of time and effort into making this behaviour work, and it ended up working okay; however, it was very inconsistent, sometimes it worked great and other times not so well. I think there was something a little bit off with the conversion between the wall angle theta, and the robots coordinate system. In the future it would be nice to take another look at this and see if it can be fixed. Also, the computational power of constantly checking for a new wall made the movement and turning a little choppy.
+  
+ <h2>Person Following</h2>
+ In order to identify and follow people I again used hierarchical clustering, but this time on lidar data to distinguish between multiple objects, and calculate the center of mass of each object. Then, that center of mass would become a goal position to which the robot would drive towards. Yet again I used a finite state controller to imitate person following behaviour.
+ <p align="center">
+  <img width="450" height="300" src="warmup_project/screenshots/PersonFollowerStateDiagram.jpg">
+  <h3>Identifying a Person</h3>
+  In order to identify discrete objects or people, I divided the measured lidar ranges into clusters using hierarchical clustering. Then, for each cluster I calculate the center of mass by taking the average X and Y coordinate of each point within a given cluster. This process is shown below.
+   <p align="center">
+  <img width="900" height="400" src="warmup_project/screenshots/MergedMass.png">
+  
+  The average mass of the cluster with the most points is chosen to be our goal position. This coordinate is with respect to the robot's coordinate system. In order to calculate the proper headin between the robots world coordinate position, and the location of the person, we must first calculate the position of the person with respect to the world's coordinate system. To do this I multiplied the 3x3 rotation matrix where theta was the robot's heading, concatenated with the robot's global position, by a 3x1 column vector of the person's position with respect to the robot. Now that I had both the robot and person's global position I could calculate the ideal heading using <img src="https://render.githubusercontent.com/render/math?math=cos(\theta) = a \cdot b/||a||\cdot ||b||"> 
+  <h3>Turning to Face the Person</h3>
+  Once the ideal heading had been calculated I again used a proportional controller to minimize the error between the robots current heading and the heading to point at the identified person.
+  <h3>TApproaching the Person</h3>
+  I used the lidar's front sensor range to measure the distance between the robot and the person as it followed. Again I used proportional control with relation to distance from the person. I set a distance threshold value of 0.25 meters to stop the robot from running into the person. Once within the specified distance the robot would return to the identifying people state and continue the cycle.
