@@ -46,4 +46,5 @@ I began by subscribing to the lidar topic and because I used openCV's version of
   <img width="1300" height="400" src="warmup_project/screenshots/Merged2WallsLabeled.png">
   
   From there, I used the <code>HoughLines()</code> function on the inverted binary image. Below visualized all lines consisting of 4 or more points.
- 
+ <p align="center">
+  <img width="500" height="500" src="warmup_project/screenshots/AllLines.png">
