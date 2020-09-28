@@ -57,4 +57,5 @@ I began by subscribing to the lidar topic and because I used OpenCV's version of
    <p align="center">
   <img width="500" height="500" src="warmup_project/screenshots/AveragedLines.png">
   
- Although for most of the wall following module I only dealt with one wall at a time, it was very helpful to be able to distinguish between walls, and isolate values associated with a particular wall. Also, I think this technique could prove useful for a wide variety of future applications.
+ Although for most of the wall following module I only dealt with one wall at a time, it was very helpful to be able to distinguish between walls, and isolate values associated with a particular wall. Also, I think this technique of analysis in the Hough space could prove useful for a wide variety of future applications.
+ Now that we have a rho and theta value for each wall, it's time to choose which wall to follow. I choose which wall to follow based on the number of lines within it's Hough space cluster. This *should* choose the wall with the most measured lidar ranges.
