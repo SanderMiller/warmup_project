@@ -56,4 +56,5 @@ I began by subscribing to the lidar topic and because I used OpenCV's version of
   The average rho and theta values, given by the red start in the scatter plot, are represented in the image below. As you can see they correlate pretty well with the actual two walls.
    <p align="center">
   <img width="500" height="500" src="warmup_project/screenshots/AveragedLines.png">
+  
  Although for most of the wall following module I only dealt with one wall at a time, it was very helpful to be able to distinguish between walls, and isolate values associated with a particular wall. Also, I think this technique could prove useful for a wide variety of future applications.
