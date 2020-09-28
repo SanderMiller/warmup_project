@@ -68,4 +68,6 @@ I began by subscribing to the lidar topic and because I used OpenCV's version of
   Similarly to the first turning state, the robot used proportional control to approach a goal heading, only this time the headin was parallel to the wall. When the robot finally reached that point, it would move on to the wall following state.
   <h3>Moving to Follow the Wall</h3>
   Once the robot is facing parallel to the wall, with a 1 meter offset, it simply has to go forward in order to follow the wall. It also ends up keeping track of the lidar ranges 90 degrees to the righturning and left of itself to ensure it does not stray too far from the wall. If this range perpendicular to the wall becomes greater or less than 1±0.5, the robot returns to the idntifying wall state in order to adjust itself and the process starts over again.
+  <h3>Results and Reflections</h3>
+  I put a lot of time and effort into making this behaviour work, and it ended up working okay; however, it was very inconsistent, sometimes it worked great and other times not so well. I think there was something a little bit off conversion between the wall angle theta, and the robots coordinate system. In the future it would be nice to take another look at this and see if it can be fixed.
   
