@@ -82,3 +82,5 @@ I began by subscribing to the lidar topic and because I used OpenCV's version of
    <p align="center">
   <img width="900" height="400" src="warmup_project/screenshots/MergedMass.png">
   
+  The average mass of the cluster with the most points is chosen to be our goal position. This coordinate is with respect to the robot's coordinate system. In order to calculate the proper headin between the robots world coordinate position, and the location of the person, we must first calculate the position of the person with respect to the world's coordinate system. To do this I multiplied the 3x3 rotation matrix where theta was the robot's heading, concatenated with the robot's global position, by a 3x1 column vector of the person's position with respect to the robot. Now that I had both the robot and person's global position I could calculate the ideal heading using <img src="https://render.githubusercontent.com/render/math?math=cos(\theta) = a \cdot b/||a||\cdot ||b||"> 
+  <h3>Identifying a Person</h3>
