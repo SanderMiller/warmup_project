@@ -74,3 +74,5 @@ I began by subscribing to the lidar topic and because I used OpenCV's version of
   
   I put a lot of time and effort into making this behaviour work, and it ended up working okay; however, it was very inconsistent, sometimes it worked great and other times not so well. I think there was something a little bit off with the conversion between the wall angle theta, and the robots coordinate system. In the future it would be nice to take another look at this and see if it can be fixed. Also, the computational power of constantly checking for a new wall made the movement and turning a little choppy.
   
+ <h2>Person Following</h2>
+ In order to identify and follow people I again used hierarchical clustering, but this time on lidar data to distinguish between multiple objects, and calculate the center of mass of each object. Then, that center of mass would become a goal position to which the robot would drive towards.
